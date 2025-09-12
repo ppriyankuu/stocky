@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 
 export const validateRewardRequest = (req: Request, res: Response, next: NextFunction) => {
-    const { userid, stockSymbol, quantity, eventId } = req.body;
+    const { userId, stockSymbol, quantity, eventId } = req.body;
 
-    if (!userid || !stockSymbol || !quantity || !eventId) {
+    if (!userId || !stockSymbol || !quantity || !eventId) {
         res.status(400).json({
             success: false,
             error: 'missing required fieds: userId, stockSymbol, quantity, evenId'
