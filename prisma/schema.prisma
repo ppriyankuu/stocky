@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(cuid())
+  email String @unique
+  name String
+  createdAt DateTime @default(now())
+  updateAd DateTime @updatedAt
+
+  rewards RewardEvent[]
+  ledgerEntries LedgerEntry[]
+}
+
+model Stock {
+  id String @id @default(cuid())
+  symbol String @unique
+  name String
+
+  rewards RewardEvent[]
+  ledgerEntries LedgerEntry[]
+  stockPrices StockPrice[]
+}
+
+model RewardEvent {
+  id String @id @default(cuid())
+  userId String
+  stockId String
+  quantity Decimal @db.Decimal(18, 6)
+  timestamp DateTime @default(now())
+  eventId String @unique // preventing duplication
+
+  user User @relation(fields: [userId], references: [id])
+  stock Stock @relation(fields: [stockId], references: [id])
+}
+
+enum EntryType {
+  STOCK_PURCHASE
+  BROKERAGE_FEE
+  STT_TAX
+  GST_TAX
+  OTHER_FEE
+}
+model LedgerEntry {
+  id String @id @default(cuid())
+  userId String
+  stockId String?
+  entryType EntryType
+  amount Decimal @db.Decimal(18, 4)
+  description String
+  timestamp DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  stock Stock? @relation(fields: [stockId], references: [id])
+}
+
+model StockPrice {
+  id String @id @default(cuid())
+  stockId String
+  price Decimal @db.Decimal(18, 4)
+  timestamp DateTime @default(now())
+
+  stock Stock @relation(fields: [stockId], references: [id])
+}
