@@ -34,8 +34,22 @@ export class RewardService {
             const currentPrice = await StockPriceService.fetchCurrentPrice(rewardData.stockSymbol);
             const quantity = new Decimal(rewardData.quantity);
 
-            // creating a reward event and ledger entries
+            // JUST IN CASE 
+            // if no user it found, the server should'nt throw a foreign key error in the trnx
+            const user = await prisma.user.upsert({
+                where: { id: rewardData.userId },
+                update: {},
+                create: {
+                    id: rewardData.userId, // >>>>
+                    name: rewardData.userId, // >>> used userId for all because
+                    email: rewardData.userId // >>>> I haven't wrote any login/signup logic
+                }
+            })
+
+            // creating a reward event and ledger entries   
             await prisma.$transaction(async (tx) => {
+
+
                 await tx.rewardEvent.create({
                     data: {
                         userId: rewardData.userId,
