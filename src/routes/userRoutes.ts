@@ -3,9 +3,9 @@ import { getHistorialINR, getPortfolio, getStats, getTodaysStocks } from "../con
 
 const router = Router();
 
-router.get('/today-stocks/:userid', getTodaysStocks);
-router.get('/historical-inr/:userid', getHistorialINR);
-router.get('/stats/:userid', getStats);
-router.get('/portfolio/:userid', getPortfolio);
+router.get('/today-stocks/:userId', getTodaysStocks);
+router.get('/historical-inr/:userId', getHistorialINR);
+router.get('/stats/:userId', getStats);
+router.get('/portfolio/:userId', getPortfolio);
 
 export default router;
