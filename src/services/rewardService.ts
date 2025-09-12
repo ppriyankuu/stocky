@@ -120,7 +120,7 @@ export class RewardService {
         const dailyValues = new Map<String, Decimal>();
 
         for (const reward of rewards) {
-            const date = reward.timestamp.toISOString().split('T')[0];
+            const date = reward.timestamp.toISOString().split('T')[0]; // timestamp looks like this: "2025-09-12T15:25:43.123Z"
             const price = await StockPriceService.fetchCurrentPrice(reward.stock.symbol);
             const value = reward.quantity.mul(price);
 
