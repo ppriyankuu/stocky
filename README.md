@@ -1,12 +1,22 @@
-# how to run
+# Stock Reward Service
+This backend API is designed to manage a system where users are rewarded with shares of Indian stocks. It handles the recording of these rewards, manages user portfolios, and calculates their value in Indian Rupees (INR).
 
-1. 
+## Setup Instructions
+1. **Build the project**: Compile the TypeScript source files into a runnable JavaScript application.
 ```
 tsc
+```
+2. **Start the server**
+```
 node dist/app.js
 ```
+The API will be available at `http://localhost:3000`.
 
-2. POST req `http://locahost:3000/api/reward`
+## API Documentation
+1. `POST /api/reward`
+This endpoint logs a new stock reward for a user. The request payload includes the user's ID, the stock's symbol, the quantity of shares, and a unique event ID to prevent duplicate entries.
+
+*Request body*:
 ```
 {
   "userId": "user123",
@@ -15,15 +25,18 @@ node dist/app.js
   "eventId": "reward_12345"
 }
 ```
-response should be:
-```{
+*Expected response*:
+```
+{
   "success": true,
   "message": "reward created successfully"
 }
 ```
 
-3. GET `api/today-stocks/{userid} // use the same id as in the postreq`
-response should be something like:
+2. `GET /api/today-stocks/{userId}`
+Fetches all stock rewards a user received on the current day.
+
+*Expected response*:
 ```
 {
   "success": true,
@@ -39,9 +52,12 @@ response should be something like:
 }
 ```
 
-4. GET `GET /api/historical-inr/{userId}`
-response:
-```{
+3. `GET /api/historical-inr/{userId}`
+Provides the daily total value of a user's stock rewards in INR for all past days.
+
+*Expected Response*:
+```
+{
   "success": true,
   "data": [
     {
@@ -52,8 +68,10 @@ response:
 }
 ```
 
-5. GET `/api/stats/{userId}`
-response
+4. `GET /api/stats/{userId}`
+Returns key performance metrics for a user's portfolio, including the total shares rewarded today (grouped by stock) and the current total value of their entire portfolio in INR.
+
+*Expected Response*:
 ```
 {
   "success": true,
@@ -69,9 +87,12 @@ response
 }
 ```
 
-6. GET `/api/portfolio/{userId}`
-response
-```{
+5. `GET /api/portfolio/{userId}`
+Displays the full holdings of a user's portfolio, listing each stock with its total quantity, current price, and total value.
+
+*Expected Response*:
+```
+{
   "success": true,
   "data": [
     {
